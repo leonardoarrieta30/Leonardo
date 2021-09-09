@@ -1,0 +1,649 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "ArchivosyLambdas.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyPA4IjrGSMKHK9tvb4gfbh2"
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VNKdmXXYRcHp"
+      },
+      "source": [
+        "##Temario\n",
+        "1. Archivos\n",
+        "2. Lambdas"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "C3HU0maSR9Y-"
+      },
+      "source": [
+        "##Archivos\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "FMcRpQSoRdhd",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "9bc56aca-e844-410d-fe4c-9ccc0846fc11"
+      },
+      "source": [
+        "%%writefile archivos.cpp\n",
+        "#include<iostream>\n",
+        "#include<fstream>\n",
+        "#include<sstream>\n",
+        "#include<string>\n",
+        "using namespace std;\n",
+        "void ejercicio1(){\n",
+        "    string frase;\n",
+        "    fstream archE(\"Frases.txt\",ios::out);//modo escritura\n",
+        "    archE<<\"UPC, exigete e innova\";\n",
+        "    archE.close();\n",
+        "\n",
+        "    fstream archL(\"Frases.txt\", ios::in );//modo lectura\n",
+        "    getline(archL,frase);\n",
+        "    archL>>frase;\n",
+        "    cout<<frase;\n",
+        "    archL.close();\n",
+        "}\n",
+        "void ejercicio2(){\n",
+        "    string frase;\n",
+        "    ofstream archE(\"Frases.txt\");//modo escritura\n",
+        "    archE<<\"UPC, exigete e innova\";\n",
+        "    archE.close();\n",
+        "\n",
+        "    ifstream archL(\"Frases.txt\");//modo lectura\n",
+        "    getline(archL,frase);\n",
+        "    archL>>frase;\n",
+        "    cout<<frase;\n",
+        "    archL.close();\n",
+        "}\n",
+        "int main(){\n",
+        "    ejercicio1();\n",
+        "\n",
+        "    return 0;\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting archivos.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6MLdKN27OMrO"
+      },
+      "source": [
+        "!g++ archivos.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NJfDX49xOw6J",
+        "outputId": "d0bb5126-c85a-4120-b533-23533a886715"
+      },
+      "source": [
+        "%%writefile archivos2.cpp\n",
+        "#include<iostream>\n",
+        "#include<fstream>\n",
+        "#include<sstream>\n",
+        "#include<string>\n",
+        "#include<cstdlib>\n",
+        "#include<ctime>\n",
+        "#include<vector>\n",
+        "using namespace std;\n",
+        "struct Bono{\n",
+        "    string nombre;\n",
+        "    float monto;\n",
+        "    char sexo;\n",
+        "};\n",
+        "void escribeArchivo(){\n",
+        "    ofstream archivo(\"Bonos.txt\");\n",
+        "    vector<Bono> bonos;\n",
+        "    for(size_t i=0;i<10;i++){\n",
+        "        Bono b;\n",
+        "        b.nombre=\"xyz\";\n",
+        "        b.monto=rand()%1000+1000;\n",
+        "        b.sexo=rand()%2==0?'M':'F';\n",
+        "        bonos.push_back(b);\n",
+        "        archivo<<b.nombre<<\" , \"<<b.monto<<\" , \"<<b.sexo<<endl;\n",
+        "    }\n",
+        "    archivo.close();\n",
+        "}\n",
+        "void LeerArchivo(){\n",
+        "    string linea;\n",
+        "    ifstream archivo(\"Bonos.txt\");\n",
+        "    for(size_t i=0;i<10;i++){\n",
+        "       if(!archivo.fail())\n",
+        "         while(!archivo.eof()){\n",
+        "             getline(archivo,linea);\n",
+        "             cout<<linea<<endl;\n",
+        "         }  \n",
+        "    }\n",
+        "    archivo.close();\n",
+        "}\n",
+        "int main(){\n",
+        "    srand(time(0));\n",
+        "    //escribeArchivo();\n",
+        "    LeerArchivo();\n",
+        "    return 0;\n",
+        "\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting archivos2.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "h_oXf_5gSuDj",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "a9bdb000-2054-462c-e6a5-677fa2415818"
+      },
+      "source": [
+        "!g++ archivos2.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "xyz , 1242 , F\n",
+            "xyz , 1990 , F\n",
+            "xyz , 1765 , F\n",
+            "xyz , 1833 , F\n",
+            "xyz , 1201 , F\n",
+            "xyz , 1701 , F\n",
+            "xyz , 1687 , F\n",
+            "xyz , 1024 , M\n",
+            "xyz , 1088 , F\n",
+            "xyz , 1105 , F\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "WRzwiSJDAePa"
+      },
+      "source": [
+        "##Lambdas\n",
+        "Donde:\n",
+        "\n",
+        "[] : Variables globales.\n",
+        "\n",
+        "() : Parametros. \n",
+        "\n",
+        "-> : Tipo de dato de retorno.\n",
+        "\n",
+        "{} : cuerpo de la función.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "gmPOY7aVZOI3",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "3ddb1a15-5089-45b3-e754-c2f1707a8fb7"
+      },
+      "source": [
+        "%%writefile lambdas.cpp\n",
+        "#include <iostream>\n",
+        "#include <functional>\n",
+        "using namespace std;\n",
+        "int mayor(int a, int b){return a>=b?a:b;}//funcion\n",
+        "int procesar(function<float(int,int)> criterio){\n",
+        "    int x=20;\n",
+        "    int y=5;\n",
+        "    cout<<criterio(x,y)<<endl;    \n",
+        "}\n",
+        "int main(){    \n",
+        "  auto lmdSuma= [](int a, int b)->float{return a+b;};//lambda\n",
+        "  auto lmdResta= [](int a, int b)->float{return a-b;};\n",
+        "  auto lmdMayor= [](int a, int b)->float{return a>=b?a:b;};\n",
+        "  auto lmdMultiplica= [](int a, int b)->float{return a*b;};\n",
+        "  auto lmdDivide= [](int a, int b)->float{return a/b;};\n",
+        "  procesar(mayor);\n",
+        "  procesar(lmdSuma);\n",
+        "  procesar(lmdResta);\n",
+        "  procesar(lmdMayor);\n",
+        "  procesar(lmdMultiplica);\n",
+        "  procesar(lmdDivide);\n",
+        "\n",
+        "    return 0;\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Writing lambdas.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OMkqQJmSAzoL",
+        "outputId": "7c779a01-2363-49db-a5c2-87113ec3de9a"
+      },
+      "source": [
+        "!g++ lambdas.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "20\n",
+            "25\n",
+            "15\n",
+            "20\n",
+            "100\n",
+            "4\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "grNXuWcfA4gp",
+        "outputId": "e8a39ea7-89bf-43fc-d1dd-a537661fcaa0"
+      },
+      "source": [
+        "%%writefile lambdas.cpp\n",
+        "#include <iostream>\n",
+        "#include <functional>\n",
+        "using namespace std;\n",
+        "int mayor(int a, int b){return a>=b?a:b;}//funcion\n",
+        "int procesar(function<float(int,int)> criterio){\n",
+        "    int x=20;\n",
+        "    int y=5;\n",
+        "    cout<<criterio(x,y)<<endl;    \n",
+        "}\n",
+        "int main(){    \n",
+        "  auto lmdSuma= [](int a, int b)->float{return a+b;};//lambda\n",
+        "  auto lmdResta= [](int a, int b)->float{return a-b;};\n",
+        "  auto lmdMayor= [](int a, int b)->float{return a>=b?a:b;};\n",
+        "  auto lmdMultiplica= [](int a, int b)->float{return a*b;};\n",
+        "  auto lmdDivide= [](int a, int b)->float{return a/b;};\n",
+        "  procesar(mayor);\n",
+        "  procesar(lmdSuma);\n",
+        "  procesar(lmdResta);\n",
+        "  procesar(lmdMayor);\n",
+        "  procesar(lmdMultiplica);\n",
+        "  procesar(lmdDivide);\n",
+        "\n",
+        "    return 0;\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting lambdas.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sHkwJzlGBCvB",
+        "outputId": "6c710d90-a6db-4a51-8eab-90ebd12ef28e"
+      },
+      "source": [
+        "!g++ lambdas.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "20\n",
+            "25\n",
+            "15\n",
+            "20\n",
+            "100\n",
+            "4\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ztrkhqf0BDSh",
+        "outputId": "7b3cc3b7-e9b4-4127-96fb-162dd226ca6f"
+      },
+      "source": [
+        "%%writefile practica.cpp\n",
+        "#include <iostream>\n",
+        "#include <fstream>\n",
+        "#include <sstream>\n",
+        "#include <functional>\n",
+        "#include <vector>\n",
+        "using namespace std;\n",
+        "struct Persona{\n",
+        "    string nombre, apellido;\n",
+        "    unsigned short edad;\n",
+        "    Persona(string nombre, string apellido,unsigned short edad ): nombre(nombre),\n",
+        "    apellido(apellido),edad(edad){  }\n",
+        "};\n",
+        "void lectura(vector<Persona>& personas){\n",
+        "    string cadena, aux;\n",
+        "    string nombre, apellido;\n",
+        "    unsigned short edad;    \n",
+        "    ifstream arch(\"alumnos.txt\");\n",
+        "    while(getline(arch,cadena )){\n",
+        "        stringstream archMemoria(cadena);\n",
+        "        getline(archMemoria,nombre,'*');\n",
+        "        getline(archMemoria,apellido,'*');\n",
+        "        getline(archMemoria,aux);\n",
+        "        edad=stoi(aux);\n",
+        "       // cout<<edad<<apellido<<\" \"<<nombre<<\" \"<<endl;\n",
+        "        personas.push_back(Persona(nombre, apellido, edad));\n",
+        "    }\n",
+        "    arch.close();\n",
+        "   // cout<<personas.size();\n",
+        "}\n",
+        "void salen(vector<Persona> p,function<void(vector<Persona>)> criterio){\n",
+        "    criterio(p);\n",
+        "}\n",
+        "int main(){\n",
+        "    vector<Persona> personas;\n",
+        "    lectura(personas);\n",
+        "    auto edad=[](vector<Persona> p ){\n",
+        "        for(size_t i=0;i<p.size();++i)\n",
+        "            if(p[i].edad>18&&p[i].edad<35)\n",
+        "              cout<<p[i].nombre<<\" \"<<p[i].apellido<<endl;\n",
+        "    };\n",
+        "    salen(personas,edad);\n",
+        "    return 0;\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting practica.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "w7xoufx9BGnR"
+      },
+      "source": [
+        "!g++ practica.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Qfr_f83OBI85",
+        "outputId": "bcbfce69-eafc-4e65-841f-f8d666509239"
+      },
+      "source": [
+        "%%writefile lambdas.cpp\n",
+        "\n",
+        "#include <iostream>\n",
+        "\n",
+        "#include <functional>\n",
+        "\n",
+        "#include <string>\n",
+        "\n",
+        "using std::cout;\n",
+        "\n",
+        "using std::function;\n",
+        "\n",
+        "using std::endl;\n",
+        "\n",
+        "using std::string;\n",
+        "\n",
+        "namespace Ejemplo1{\n",
+        "\n",
+        "    void operacion(function<short(short,short)> funcion){\n",
+        "\n",
+        "    int a=10;\n",
+        "\n",
+        "    int b=5;\n",
+        "\n",
+        "    cout<<funcion(a,b)<<endl;\n",
+        "\n",
+        "}\n",
+        "\n",
+        "void operacion(int a, int b, function<short(short,short)> funcion){    \n",
+        "\n",
+        "    cout<<funcion(a,b)<<endl;\n",
+        "\n",
+        "}\n",
+        "\n",
+        "/*\n",
+        "\n",
+        "[] variables globales\n",
+        "\n",
+        "() parametros\n",
+        "\n",
+        "-> tipo de retorno(opcional)\n",
+        "\n",
+        "{} cuerpo de funcion\n",
+        "\n",
+        "*/\n",
+        "\n",
+        "\n",
+        "\n",
+        "short f_suma(short a, short b){return a+b;}\n",
+        "\n",
+        "void ejemplo1(){\n",
+        "\n",
+        "    int a=100;\n",
+        "\n",
+        "    int b=50;\n",
+        "\n",
+        "   \n",
+        "\n",
+        "    auto suma=[](short a, short b)->short{return a+b;};\n",
+        "\n",
+        "    auto resta=[](short a, short b){return a-b;};\n",
+        "\n",
+        "    auto multiplicacion=[](short a, short b){return a*b;};\n",
+        "\n",
+        "    auto division=[](short a, short b){return a/b;};\n",
+        "\n",
+        "    operacion(suma);\n",
+        "\n",
+        "    operacion(resta);\n",
+        "\n",
+        "    operacion(multiplicacion);\n",
+        "\n",
+        "    operacion(division);\n",
+        "\n",
+        "    operacion(a,b,suma);\n",
+        "\n",
+        "    operacion(a,b,resta);\n",
+        "\n",
+        "    operacion(a,b,multiplicacion);\n",
+        "\n",
+        "    operacion(a,b,division);\n",
+        "\n",
+        "\n",
+        "\n",
+        "}\n",
+        "\n",
+        "\n",
+        "\n",
+        "}\n",
+        "\n",
+        "\n",
+        "\n",
+        "namespace Ejemplo2{\n",
+        "\n",
+        "struct Persona{\n",
+        "\n",
+        "    string nombre;\n",
+        "\n",
+        "    unsigned short edad;\n",
+        "\n",
+        "    string correo;\n",
+        "\n",
+        "};\n",
+        "\n",
+        "void mostrar(Persona p,function<void(Persona)> f){   f(p); }    \n",
+        "\n",
+        "void ejemplo2(){\n",
+        "\n",
+        "    Persona p;\n",
+        "\n",
+        "    p.nombre=\"Walter\";\n",
+        "\n",
+        "    p.edad=38;\n",
+        "\n",
+        "    p.correo=\"waltercueva@gmail.com\";\n",
+        "\n",
+        "    auto horizontal=[](Persona p){\n",
+        "\n",
+        "        cout<<p.nombre<<\" \"<<p.edad<<\" \"<<p.correo<<endl;};\n",
+        "\n",
+        "    auto nombre=[](Persona p){\n",
+        "\n",
+        "        cout<<p.nombre<<endl;};\n",
+        "\n",
+        "    auto vertical=[](Persona p){\n",
+        "\n",
+        "        cout<<p.nombre<<endl<<p.edad<<endl<<p.correo<<endl;};\n",
+        "\n",
+        "    mostrar(p,horizontal);\n",
+        "\n",
+        "  }\n",
+        "\n",
+        "}\n",
+        "\n",
+        "int main(){\n",
+        "\n",
+        "  Ejemplo2::ejemplo2();  \n",
+        "\n",
+        "}"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting lambdas.cpp\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tuDL1jt_CRFX",
+        "outputId": "9c04b215-f068-4331-8cf6-403db2f24f25"
+      },
+      "source": [
+        "!g++ lambdas.cpp && ./a.out"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Walter 38 waltercueva@gmail.com\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "bClh9DM3CV-O"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
